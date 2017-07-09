@@ -37,6 +37,7 @@ void motor_setup(uint8_t motor) {
         setBit(TCCR2B, CS22);
 
     }
+        motor_update(motor, false, 0);
 }
 
 void motor_update(uint8_t motor, bool direction, uint8_t speed) {
