@@ -39,7 +39,7 @@ class BrickPi:
         self.ser.write(pack(">I", tmp))
         sleep(.1)
 
-    def stop():
+    def stop(self):
         self.updateSpeed(0, 0)
         self.updateSpeed(1, 0)
 
