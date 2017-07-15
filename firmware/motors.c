@@ -40,6 +40,7 @@ void motor_setup(uint8_t motor) {
         motor_update(motor, false, 0);
 }
 
+// TODO: Motors same direction
 void motor_update(uint8_t motor, bool direction, uint8_t speed) {
     if (motor == 0) { 
         if(direction) {
@@ -52,7 +53,7 @@ void motor_update(uint8_t motor, bool direction, uint8_t speed) {
         OCR1B = speed;
     }
     else {
-        if(direction) {
+        if(!direction) {
             setBit(PORTB, PORTB1);
         } else {
             speed = 255 - speed;
