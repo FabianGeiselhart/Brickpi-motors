@@ -10,7 +10,6 @@ import RPi.GPIO as GPIO
 
 print("Imports abgeschlossen")
 
-
 class BrickPi:
 
     def __init__(self):
@@ -39,6 +38,10 @@ class BrickPi:
         tmp |= (direction << 5)
         self.ser.write(pack(">I", tmp))
         sleep(.1)
+
+    def stop():
+        self.updateSpeed(0, 0)
+        self.updateSpeed(1, 0)
 
 if __name__ == "__main__":
     b = BrickPi()
