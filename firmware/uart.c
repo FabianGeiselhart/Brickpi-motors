@@ -42,22 +42,19 @@ void uart_motor(uint8_t data) {
     static bool speed = false;
     static uint8_t motor;
  
-    uart_transmit(data);
-    uart_transmit(motor);
-    uart_transmit('-');
     if (speed) {
         motor_update(motor, motorDir(motor), data);
         speed = false;
         return;
     } else {
-        motor = checkBit(data, 2);
+        motor = bit_is_set(data, 2);
     }
 
-    if (!checkBit(data, 3) && !checkBit(data, 4)) { // Set Speed
+    if (!bit_is_set(data, 3) && !bit_is_set(data, 4)) { // Set Speed
         speed = true;
         uart_transmit('s');
-    } else if (checkBit(data, 3) && !checkBit(data, 4)) { // Set direction
-        motor_update(motor, checkBit(data, 5), motorSpeed(motor));
+    } else if (bit_is_set(data, 3) && !bit_is_set(data, 4)) { // Set direction
+        motor_update(motor, bit_is_set(data, 5), motorSpeed(motor));
         uart_transmit('d');
     }
 }
