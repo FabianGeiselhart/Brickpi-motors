@@ -1,6 +1,6 @@
 #include <avr/io.h>
-#include "bits.h"
 #include <stdbool.h>
+#include "bits.h"
 #include "motors.h"
 
 void motor_setup(uint8_t motor) {
@@ -24,7 +24,7 @@ void motor_setup(uint8_t motor) {
         setBit(PORTB, PORTB5);
 
         // Invert mode
-        setBit(TCCR2A, COM2A0);
+        //setBit(TCCR2A, COM2A0);
         setBit(TCCR2A, COM2A1);
 
         // WGM Mode: 3, Fast PWM
@@ -35,12 +35,10 @@ void motor_setup(uint8_t motor) {
         setBit(TCCR2B, CS20);
         setBit(TCCR2B, CS21);
         setBit(TCCR2B, CS22);
-
     }
         motor_update(motor, false, 0);
 }
 
-// TODO: Motors same direction
 void motor_update(uint8_t motor, bool direction, uint8_t speed) {
     if (motor == 0) { 
         if(direction) {
@@ -48,16 +46,19 @@ void motor_update(uint8_t motor, bool direction, uint8_t speed) {
             setBit(TCCR1A, COM1B0);
         } else {
             unsetBit(PORTB, PORTB0);
+//            speed = 255 - speed;
             unsetBit(TCCR1A, COM1B0);
         }
         OCR1B = speed;
     }
     else {
-        if(!direction) {
+        if(direction) {
             setBit(PORTB, PORTB1);
+//            speed = 255 - speed;
+            setBit(TCCR2A, COM1A0);
         } else {
-            speed = 255 - speed;
             unsetBit(PORTB, PORTB1);
+            unsetBit(TCCR2A, COM1A0);
         }
         OCR2A = speed;
     }
