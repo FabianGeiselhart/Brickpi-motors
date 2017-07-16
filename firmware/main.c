@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdbool.h>
 #include "bits.h"
@@ -12,7 +13,7 @@ int main(void)
 
     uart_setup();
     uart_transmit('i');
-    
+
     GPIOR0 = 0;
 
     int last = GPIOR0;
