@@ -2,3 +2,6 @@
 *.map
 *.o
 __pycache__
+library/BrickPiMotors.egg-info
+library/build
+library/dist
