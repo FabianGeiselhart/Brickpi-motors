@@ -25,17 +25,12 @@ void uart_transmit(unsigned char data)
     UDR0 = data;                                   // load data in the register
 }
 
-void uart_flush( void ) {
-        unsigned char dummy;
-        while ( UCSR0A & (1<<RXC0) ) dummy = UDR0;
-}
-
 ISR(USART_RX_vect) { // React on sent data
-    GPIOR0++;
-    if (GPIOR0 % 4 == 0) {
-        GPIOR1 = UDR0;
-    }
-    uart_flush();
+     unsigned char dummy;
+     dummy = UDR0;                     // dump the rcvr buffer
+     while (!( UCSR0A & (1<<UDRE0)));  // wait until the register is free                     
+     UDR0 = dummy;                      // load xmt data in the register
+     uart_motor(dummy);
 }
 
 void uart_motor(uint8_t data) {
