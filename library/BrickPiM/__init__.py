@@ -18,7 +18,6 @@ class BrickPi:
         tmp |= (motor << 2)
         self.ser.write(pack("!B", tmp))
         self.ser.write(pack("!B", speed))
-        sleep(.1)
 
     def updateDirection(self, motor, direction):
         tmp = 0
@@ -26,7 +25,6 @@ class BrickPi:
         tmp |= (1 << 3)
         tmp |= (direction << 5)
         self.ser.write(pack("!B", tmp))
-        sleep(.1)
 
     def stop(self):
         self.updateSpeed(0, 0)
