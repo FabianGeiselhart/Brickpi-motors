@@ -46,21 +46,31 @@ void motor_update(uint8_t motor, bool direction, uint8_t speed) {
             setBit(TCCR1A, COM1B0);
         } else {
             unsetBit(PORTB, PORTB0);
-//            speed = 255 - speed;
             unsetBit(TCCR1A, COM1B0);
         }
         OCR1B = speed;
+
+        if (speed == 0) {
+            unsetBit(PORTB, PORTB4);
+        } else {
+            setBit(PORTB, PORTB4);
+        }
     }
     else {
         if(direction) {
             setBit(PORTB, PORTB1);
-//            speed = 255 - speed;
             setBit(TCCR2A, COM1A0);
         } else {
             unsetBit(PORTB, PORTB1);
             unsetBit(TCCR2A, COM1A0);
         }
         OCR2A = speed;
+
+        if (speed == 0) {
+            unsetBit(PORTB, PORTB5);
+        } else {
+            setBit(PORTB, PORTB5);
+        }
     }
 }
 
