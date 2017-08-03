@@ -27,14 +27,14 @@ next one.
 tested it yet)
 
 * Linux:
-..1. Install the avr toolchain and GNU Make
-..2. Clone the Repo
-..3. Change into the firmware/ directory
-..4. If you are not using a USBtinyISP programmer open firmware/makefile
+  1. Install the avr toolchain and GNU Make
+  2. Clone the Repo
+  3. Change into the firmware/ directory
+  4. If you are not using a USBtinyISP programmer open firmware/makefile
 and set $(PROGRAMMER) accordingly
-..5. Connect your programmer to the ICSP port next to the GPIO Pins 
+  5. Connect your programmer to the ICSP port next to the GPIO Pins 
 (You don't have to flash both chips b/c the firmware doesn't support that yet)
-..6. Execute `make`. This should compile and flash the firmware
+  6. Execute `make`. This should compile and flash the firmware
 
 ## Install the python library on your Raspberry Pi
 
@@ -51,28 +51,28 @@ and set $(PROGRAMMER) accordingly
 
 1. Import the library
 
-    from BrickPiM import BrickPi
+        from BrickPiM import BrickPi
 
 2. Initialise the BrickPI
 
-    b = BrickPi(timeout=.1)
+        b = BrickPi(timeout=.1)
 
-  * timeout: The time to wait for a reaction
+    * timeout: The time to wait for a reaction
 
 3. Change the speed
 
-    b.updateSpeed(motor, speed)
+        b.updateSpeed(motor, speed)
 
-  * motor: MA = 0; MB = 1
-  * Speed: any value between 0 and 255
+    * motor: MA = 0; MB = 1
+    * Speed: any value between 0 and 255
 
 4. Change the direction
 
-    b.updateDirection(motor, direction)
+        b.updateDirection(motor, direction)
 
-  * motor: MA = 0; MB = 1
-  * Direciton: 0 or 1
+    * motor: MA = 0; MB = 1
+    * Direciton: 0 or 1
 
 5. Close the connection and stop the motors
-    b.stop()
+        b.stop()
 
