@@ -6,35 +6,19 @@
 void motor_setup(uint8_t motor) {
     if(motor == 0) {
         DDRB |= 0x15; // 0b00010101; Port Setup
-        setBit(PORTB, PORTB4);
-
-        // Invert Mode
-        setBit(TCCR1A, COM1B1);
-        setBit(TCCR1A, COM1B0);
+        PORTB |= (1 << PORTB4);
+        TCCR1A |= (1 << COM1B1) | (1 << COM1B0); // Invert Mode
+        TCCR1B |= (1 << CS10) | (1 << CS12); // Clock: clk/1024
 
         // WGM Mode: 5; Fast PWM
-        setBit(TCCR1A, WGM10);
-        setBit(TCCR1B, WGM12);
-
-        // Clock: clk/1024
-        setBit(TCCR1B, CS10);
-        setBit(TCCR1B, CS12);
+        TCCR1A |= (1 << WGM10);
+        TCCR1B |= (1 << WGM12);
     } else if(motor == 1) {
         DDRB |= 0x2A; //0b00101010; Port setup
-        setBit(PORTB, PORTB5);
-
-        // Invert mode
-        //setBit(TCCR2A, COM2A0);
-        setBit(TCCR2A, COM2A1);
-
-        // WGM Mode: 3, Fast PWM
-        setBit(TCCR2A, WGM20);
-        setBit(TCCR2A, WGM21);
-
-        // Clock: clk/1024
-        setBit(TCCR2B, CS20);
-        setBit(TCCR2B, CS21);
-        setBit(TCCR2B, CS22);
+        PORTB |= (1 << PORTB5);
+        TCCR2A |= (1 << COM2A1); // Invert mode
+        TCCR2A |= (1 << WGM20) | (1 << WGM21); // WGM Mode: 3, Fast PWM
+        TCCR2B |= (1 << CS20) | (1 << CS21) | (1 << CS22); // Clock: clk/1024
     }
         motor_update(motor, false, 0);
 }
