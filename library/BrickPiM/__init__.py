@@ -37,7 +37,7 @@ class BrickPi:
         if self.ser.read() != b'd':
             raise RuntimeError('The BrickPi is not responding')
 
-    def moveSteps(self, motor, steps):
+    def moveSteps(self, motor, steps, interrupt=True):
         """ Keep motor running until encoder-value
             changed by steps """
         tmp = 0
@@ -46,10 +46,16 @@ class BrickPi:
 
         self.ser.flushInput()
         self.ser.write(pack("!B", tmp))
+        self.ser.write(pack(">i", steps))
         if self.ser.read() != b'e':
             raise RuntimeError('The BrickPi is not responding')
+        if interrupt:
+            while self.ser.read() != b'0':
+                pass
 
     def stop(self):
         self.updateSpeed(0, 0)
         self.updateSpeed(1, 0)
+        self.updateDirection(0, 0)
+        self.updateDirection(1, 0)
         self.ser.stop()
