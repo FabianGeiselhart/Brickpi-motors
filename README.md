@@ -73,6 +73,14 @@ and set $(PROGRAMMER) accordingly
     * motor: MA = 0; MB = 1
     * Direciton: 0 or 1
 
+5. Rotate the selected motor by specified degree and stop
+        b.moveSteps(motor, steps, interrupt=True)
+
+    * motor: MA = 0; MB = 1
+    * steps: Degree to rotate
+    * interrupt: Specify whether to wait until the motor stops
+        default = True
+
 5. Close the connection and stop the motors
         b.stop()
 
