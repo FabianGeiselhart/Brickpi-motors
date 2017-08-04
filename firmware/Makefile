@@ -2,11 +2,12 @@ CC = avr-gcc
 OBJCOPY = avr-objcopy
 
 TARGET = main
-OBJECTS = motors.o main.o uart.o
+OBJECTS = motors.o main.o uart.o encoder.o encoder.o
 
 ## Chip stuff
 MCU = atmega328p
 F_CPU = 16000000
+PROGRAMMER = usbtiny
 
 ## Compiler/linker options 
 CFLAGS = -Os -g -std=gnu99 -Wall 
@@ -22,7 +23,7 @@ all: flash
 
 .PHONY: flash
 flash: $(TARGET).hex
-	sudo avrdude -P usb -c usbtiny -p m328p -U flash:w:$<
+	sudo avrdude -P usb -c $(PROGRAMMER) -p m328p -U flash:w:$<
 	
 %.hex: %.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
@@ -32,9 +33,6 @@ flash: $(TARGET).hex
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).map
-
-build:
-	mkdir bin build
 
 .PHONY: flash-fuse
 flash-fuse:
