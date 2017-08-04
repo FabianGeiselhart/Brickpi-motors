@@ -1,9 +1,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "encoder.h"
+#include "motors.h"
+#include "uart.h"
 #include "bits.h"
 
 volatile int32_t encoder_steps[2] = {0, 0};
+volatile int32_t encoder_until[2] = {0, 0};
 volatile uint8_t last_status;
 
 void encoder_setup()
@@ -22,11 +25,31 @@ void encoder_setup()
     last_status = PIND & MASK;
 }
 
+// Check whether to stop the motors due to an encoder command from the RPi
+void encoder_check(uint8_t motor) {
+    // Value of enc before moveSteps() command was received 
+    static int32_t encoder_last[2] = {0, 0}; 
+
+    if (encoder_until[motor] != 0) { // Encoder operation pending
+        if (encoder_last[motor] == 0) { // First run
+            encoder_last[motor] = encoder_steps[motor];
+        }
+        // Motor reached wanted state
+        if (encoder_last[motor] + encoder_until[motor] <= encoder_steps[motor] ||
+                encoder_last[motor] - encoder_until[motor] >= encoder_steps[motor]) {
+            motor_update(motor, motorDir(motor), 0);
+            encoder_last[motor] = 0;
+            encoder_until[motor] = 0;
+            uart_transmit('0');
+        }
+    }
+}
+
+// Update encoder_steps[motor] accorgingly
 ISR(PCINT2_vect)
 {
     uint8_t status = PIND;
     uint8_t PinA, PinB, encoder;
-
     status &= MASK;
 
     // Check whick encoder triggerd interrupt

@@ -5,7 +5,8 @@
 #define MASK0 0x14
 #define MASK1 0x28
 
-extern volatile int32_t encoder_steps[2];
+extern volatile int32_t encoder_until[2];
 void encoder_setup();
+void encoder_check(uint8_t motor);
 
 #endif
